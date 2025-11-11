@@ -1,6 +1,12 @@
-theorem not_superpowered_zero : ¬ Superpowered 0 := by
-  intro h
-  have one_prime : Prime (0 ^ 0 ^ 0 + 1) := h 0
-  conv at one_prime => numbers -- simplifies that statement to `Prime 1`
-  have : ¬ Prime 1 := not_prime_one
-  contradiction]
+theorem not_and_implies_not_or_not (P Q : Prop) :
+  ¬ (P ∧ Q) → (¬ P) ∨ (¬ Q) := by
+  intro h  -- assume ¬(P ∧ Q)
+  by_cases hP : P
+  · -- Case: P is true
+    right                     -- we'll show ¬Q
+    intro hQ                 -- assume Q
+    apply h                  -- leads to contradiction
+    exact And.intro hP hQ
+  · -- Case: P is false
+    left                      -- we produce ¬P
+    exact hP
